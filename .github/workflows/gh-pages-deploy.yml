@@ -51,7 +51,7 @@ jobs:
 
       # Run Tailwind CSS CLI
       - name: Run Tailwind CSS
-        run: npx @tailwindcss/cli -i ./style/tailwind.css -o ./style.css --minify --yes
+        run: npm install && npx @tailwindcss/cli@latest -i ./style/tailwind.css -o ./style.css --minify --yes
 
       - name: Download and install Trunk binary
         run: wget -qO- https://github.com/trunk-rs/trunk/releases/download/v0.18.4/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
