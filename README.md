@@ -3,89 +3,88 @@
     <img src="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_RGB.svg" alt="Leptos Logo">
 </picture>
 
-# Leptos Axum Starter Template
+# Bryan Maina's Developer Blog
 
-This is a template for use with the [Leptos](https://github.com/leptos-rs/leptos) web framework and the [cargo-leptos](https://github.com/akesson/cargo-leptos) tool using [Axum](https://github.com/tokio-rs/axum).
+This is a personal developer blog built with the [Leptos](https://github.com/leptos-rs/leptos) web framework, showcasing my skills and journey as a software developer. The blog is designed to be lightweight, performant, and visually appealing, leveraging a modern Rust-based tech stack.
 
-## Creating your template repo
+For a detailed list of features and project requirements, please refer to the [Product Requirements Document (PRD)](./docs/product_requirements.md#1-functional-requirements).
 
-If you don't have `cargo-leptos` installed you can install it with
+## Tech Stack
 
+*   **[Leptos](https://github.com/leptos-rs/leptos):** Rust framework for client-side rendering (CSR).
+*   **[Leptos-Use](https://github.com/Synphonyte/leptos-use):** Utility library for Leptos to enhance reactivity and state management.
+*   **[Thaw UI](https://github.com/thaw-ui/thaw):** Component library for reusable UI elements.
+*   **[Tailwind CSS](https://github.com/tailwindlabs/tailwindcss):** Utility-first CSS framework for styling, using the standalone CLI.
+*   **[Bevy](https://github.com/bevyengine/bevy):** Rust game engine for 3D animations (in the About section).
+*   **[pulldown-cmark](https://github.com/raphlinus/pulldown-cmark):** Markdown parser for rendering blog post content.
+*   **[syntect](https://github.com/trishume/syntect):** Syntax highlighting for code snippets in blog posts.
+*   **[Trunk](https://github.com/trunk-rs/trunk):** Build tool for the project.
+*   **[Make](https://www.gnu.org/software/make/):** Utility for automating build processes.
+
+## Getting Started
+
+### Prerequisites
+
+*   **Rust:** Ensure you have Rust installed. If not, follow the instructions on the official Rust website: [https://www.rust-lang.org/tools/install](https://www.rust-lang.org/tools/install)
+*   **Cargo:** Cargo is the Rust package manager and build tool. It comes with Rust.
+*   **Git:** You'll need Git to clone the repository. [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+*   **Node.js and npm:** Required for Tailwind CSS and `concurrently`. You can download them from https://nodejs.org/.
+*   **Make:** A build automation tool. It's typically pre-installed on Linux and macOS. Windows users might need to install it (e.g., via Chocolatey or WSL).
+
+### Installation
+
+1.  **Clone the Repository:**
+
+    ```bash
+    git clone <repository_url>
+    cd bryanmaina-portfolio
+    ```
+
+    Replace `<repository_url>` with the actual URL of the repository.
+
+2.  **Install Dependencies:**
+
+    ```bash
+    make install
+    ```
+    This command installs Trunk, Node.js packages (including `concurrently`), and any other necessary dependencies defined in the `Makefile`.
+
+### Running the Project
+
+1.  **Start Development Servers:**
+
+    ```bash
+    make dev
+    ```
+    This command uses `concurrently` (installed via `make install`) to run both the Tailwind CSS watcher and the Trunk development server in the same terminal.
+
+2.  **Open in Browser:**
+
+    Open your web browser and go to `http://127.0.0.1:8080` (or the address provided by Trunk).
+
+### Building for Production
+
+1.  **Build the Project:**
+    ```bash
+    make build
+    ```
+    This command handles both Tailwind CSS generation (minified) and the Trunk build process. The optimized output will be placed in the `./dist` directory.
+
+2.  **Deploy**
+    The content of the `dist` folder is ready for deployment to GitHub Pages.
+
+    **Note:** Deployment to GitHub Pages happens automatically when you push to the `main` branch via the configured GitHub Actions workflow.
+
+## Additional Tools
+
+*   **Rust Nightly:** This project uses Rust nightly.
+*   **wasm32-unknown-unknown:** The WebAssembly target is required.
+*   **cargo-generate:** Used for generating new projects.
+*   **Tailwind CSS CLI:** Used for styling.
+*   **concurrently:** Used by `make dev` to run processes in parallel.
+
+## Testing
+
+Run the tests using:
 ```bash
-cargo install cargo-leptos --locked
-```
-
-Then run
-```bash
-cargo leptos new --git https://github.com/leptos-rs/start-axum
-```
-
-to generate a new project template.
-
-```bash
-cd bryanmaina-portfolio
-```
-
-to go to your newly created project.  
-Feel free to explore the project structure, but the best place to start with your application code is in `src/app.rs`.  
-Addtionally, Cargo.toml may need updating as new versions of the dependencies are released, especially if things are not working after a `cargo update`.
-
-## Running your project
-
-```bash
-cargo leptos watch
-```
-
-## Installing Additional Tools
-
-By default, `cargo-leptos` uses `nightly` Rust, `cargo-generate`, and `sass`. If you run into any trouble, you may need to install one or more of these tools.
-
-1. `rustup toolchain install nightly --allow-downgrade` - make sure you have Rust nightly
-2. `rustup target add wasm32-unknown-unknown` - add the ability to compile Rust to WebAssembly
-3. `cargo install cargo-generate` - install `cargo-generate` binary (should be installed automatically in future)
-4. `npm install -g sass` - install `dart-sass` (should be optional in future
-5. Run `npm install` in end2end subdirectory before test
-
-## Compiling for Release
-```bash
-cargo leptos build --release
-```
-
-Will generate your server binary in target/server/release and your site package in target/site
-
-## Testing Your Project
-```bash
-cargo leptos end-to-end
-```
-
-```bash
-cargo leptos end-to-end --release
-```
-
-Cargo-leptos uses Playwright as the end-to-end test tool.  
-Tests are located in end2end/tests directory.
-
-## Executing a Server on a Remote Machine Without the Toolchain
-After running a `cargo leptos build --release` the minimum files needed are:
-
-1. The server binary located in `target/server/release`
-2. The `site` directory and all files within located in `target/site`
-
-Copy these files to your remote server. The directory structure should be:
-```text
-bryanmaina-portfolio
-site/
-```
-Set the following environment variables (updating for your project as needed):
-```sh
-export LEPTOS_OUTPUT_NAME="bryanmaina-portfolio"
-export LEPTOS_SITE_ROOT="site"
-export LEPTOS_SITE_PKG_DIR="pkg"
-export LEPTOS_SITE_ADDR="127.0.0.1:3000"
-export LEPTOS_RELOAD_PORT="3001"
-```
-Finally, run the server binary.
-
-## Licensing
-
-This template itself is released under the Unlicense. You should replace the LICENSE for your own application with an appropriate license if you plan to release it publicly.
+make test
