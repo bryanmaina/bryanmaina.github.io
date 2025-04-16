@@ -12,8 +12,8 @@ pub fn BaseLayout() -> impl IntoView {
             <Layout>
                 <LayoutHeader attr:style="background-color: #0078ffaa; padding: 20px;">
                     <nav class="flex space-x-4">
-                        <A href="/">"Blog"</A>
-                        <A href="/about">"About"</A>
+                        <A href="/?q=blog">"Blog"</A>
+                        <A href="/?q=about">"About"</A>
                     </nav>
                 </LayoutHeader>
                 <Layout attr:style="background-color: #0078ff88; padding: 20px;">
