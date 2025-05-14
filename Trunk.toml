@@ -1,4 +1,6 @@
 [build]
 target = "index.html"
+release = true
 dist = "dist"
 inject_scripts = true
+ignore = ["./target"] # Paths to ignore.

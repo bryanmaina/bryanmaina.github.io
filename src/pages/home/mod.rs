@@ -1,16 +1,36 @@
 use leptos::prelude::*;
-use leptos_meta::*;
+use reactive_stores::Store;
 
-use crate::components::count_btn::Button;
+use crate::{
+    app::{GlobalState, GlobalStateStoreFields},
+    components::{blog_sub_navbar::BlogSubNavbar, count_btn::Button},
+};
 
 #[component]
-pub fn HomePage() -> impl IntoView {
+pub fn HomePage(
+    #[prop(optional, default = "relative".to_string())] main_navbar_position: String,
+) -> impl IntoView {
+    let store = expect_context::<Store<GlobalState>>();
+    let main_nav_position = store.main_nav_position();
+    *main_nav_position.write() = main_navbar_position.to_string();
+
     view! {
+        <BlogSubNavbar />
         <main>
-            <Title text="blog" />
-            <h1 class="text-3xl font-bold text-green-800 underline">"Welcome to Leptos!"</h1>
-            <h2 class="bg-amber-600 text-2xl text-red-400">"Tailwind is working as expected"</h2>
+            <div class="bg-red-500 h-screen">
+                <h1>{move || main_nav_position.get()}</h1>
+                <p>"List of articles:"</p>
+                <ul>
+                    <li>
+                        <a href="/?q=blog&article=how-to-communicate">"How to Communicate"</a>
+                    </li>
+                    <li>
+                        <a href="/?q=blog&article=rust-basics">"Rust Basics"</a>
+                    </li>
+                </ul>
+            </div>
             <Button />
+            <pre>{move || serde_json::to_string_pretty(&*store.read())}</pre>
         </main>
     }
 }

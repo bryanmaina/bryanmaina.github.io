@@ -1,21 +1,38 @@
 use leptos::prelude::*;
-use leptos_router::components::{Outlet, A};
-use thaw::*;
+use leptos_router::components::Outlet;
+use leptos_use::{use_toggle, UseToggleReturn};
+
+use crate::components::navbar::NavBar;
 
 #[component]
 pub fn BaseLayout() -> impl IntoView {
+    let (nav_height, nav_height_setter) = signal(0_f64);
+
+    let UseToggleReturn {
+        toggle: toggle_navbar,
+        value: show_navbar,
+        set_value: set_navbar_value,
+    } = use_toggle(false);
+
     view! {
-        <Layout>
-            <LayoutHeader attr:style="background-color: #0078ffaa; padding: 20px;">
-                <nav class="flex space-x-4">
-                    <A href="">"Home"</A>
-                    <A href="/?q=blog">"Blog"</A>
-                    <A href="/?q=about">"About"</A>
-                </nav>
-            </LayoutHeader>
-            <Layout attr:style="background-color: #0078ff88; padding: 20px;">
+        <div class="flex flex-col items-stretch">
+            <div style:height=move || format!("calc((0.75rem * 2) + {}px)", nav_height.get())>
+                <NavBar
+                    nav_show=show_navbar
+                    nav_toggle=move |_| toggle_navbar()
+                    nav_hide=move |_| set_navbar_value(false)
+                    nav_height
+                    nav_height_setter
+                />
+            </div>
+            <div class="h-[300vh]">
+                <div
+                    class="z-40 fixed w-screen h-screen top-0 backdrop-blur-2xl cursor-pointer"
+                    style:display=move || { if show_navbar.get() { "block" } else { "none" } }
+                ></div>
                 <Outlet />
-            </Layout>
-        </Layout>
+                <p class="text-3xl">{move || if show_navbar.get() { "true" } else { "false" }}</p>
+            </div>
+        </div>
     }
 }

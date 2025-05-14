@@ -5,15 +5,28 @@ use leptos_router::{
     hooks::use_query_map,
     StaticSegment,
 };
+use reactive_stores::Store;
+use serde::Serialize;
 
 use crate::{
     layouts::base_layout::BaseLayout,
-    pages::{about::AboutPage, home::HomePage},
+    pages::{about::AboutPage, home::HomePage, projects::ProjectsPage},
 };
+
+#[derive(Debug, Clone, Default, Store, Serialize)]
+pub struct GlobalState {
+    count: i32,
+    main_nav_position: String,
+    main_nav_expanded: bool,
+    sub_nav_expanded: bool,
+}
 
 #[component]
 pub fn App() -> impl IntoView {
     provide_meta_context();
+    let store = Store::new(GlobalState::default());
+    provide_context(store);
+
     let formatter = |text| format!("{text} — Bryan Maina");
 
     view! {
@@ -33,19 +46,20 @@ pub fn App() -> impl IntoView {
 #[component]
 fn ViewSelector() -> impl IntoView {
     let query_params = use_query_map();
-    let current_view = move || match query_params.read().get("q").as_deref() {
+
+    move || match query_params.read().get("q").as_deref() {
         Some("blog") => match query_params.read().get("article").as_deref() {
             Some(article_slug) => BlogPostPage(BlogPostPageProps {
                 slug: article_slug.to_string(),
             })
             .into_any(),
-            None => BlogListPage().into_any(),
+            None => view! { <HomePage /> }.into_any(),
         },
-        Some("about") => AboutPage().into_any(),
-        None => HomePage().into_any(),
-        Some(_) => HomePage().into_any(),
-    };
-    current_view
+        Some("about") => view! { <AboutPage /> }.into_any(),
+        Some("projects") => ProjectsPage().into_any(),
+        None => view! { <HomePage /> }.into_any(),
+        Some(_) => view! { <HomePage /> }.into_any(),
+    }
 }
 
 #[component]
@@ -54,22 +68,5 @@ fn BlogPostPage(slug: String) -> impl IntoView {
         <h1>"Blog Post"</h1>
         // Here you would fetch and display the post based on the slug
         <p>"Displaying article: " {slug}</p>
-    }
-}
-
-#[component]
-fn BlogListPage() -> impl IntoView {
-    view! {
-        <h1>"Blog"</h1>
-        <p>"List of articles:"</p>
-        <ul>
-            // Example link to a specific article
-            <li>
-                <a href="/?q=blog&article=how-to-communicate">"How to Communicate"</a>
-            </li>
-            <li>
-                <a href="/?q=blog&article=rust-basics">"Rust Basics"</a>
-            </li>
-        </ul>
     }
 }
