@@ -1,6 +1,6 @@
 use leptos::prelude::*;
 use leptos_router::components::Outlet;
-use leptos_use::{use_toggle, UseToggleReturn};
+use leptos_use::{use_document, use_toggle, UseToggleReturn};
 use reactive_stores::Store;
 
 use crate::{
@@ -11,6 +11,7 @@ use crate::{
 #[component]
 pub fn BaseLayout() -> impl IntoView {
     let store = expect_context::<Store<GlobalState>>();
+    let main_nav_expanded = store.main_nav_expanded();
     let sub_nav_expanded = store.sub_nav_expanded();
 
     let (nav_height, nav_height_setter) = signal(0_f64);
@@ -20,6 +21,17 @@ pub fn BaseLayout() -> impl IntoView {
         value: show_navbar,
         set_value: set_navbar_value,
     } = use_toggle(false);
+
+    let document = use_document();
+
+    Effect::new(move |_| {
+        *main_nav_expanded.write() = show_navbar.get();
+        if show_navbar.get() {
+            document.body().unwrap().set_class_name("cannotscroll");
+        } else {
+            document.body().unwrap().set_class_name("canscroll");
+        }
+    });
 
     view! {
         <div class="flex flex-col items-stretch">

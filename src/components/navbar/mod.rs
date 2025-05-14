@@ -4,7 +4,6 @@ use leptos::prelude::*;
 use leptos::web_sys::Event;
 use leptos::web_sys::MouseEvent;
 use leptos_router::components::A;
-use leptos_use::use_document;
 use leptos_use::use_media_query;
 use leptos_use::{on_click_outside, use_resize_observer};
 use reactive_stores::Store;
@@ -51,16 +50,6 @@ pub fn NavBar(
         true => "Close",
         false => "Menu",
     };
-
-    let document = use_document();
-
-    Effect::new(move |_| {
-        if nav_show.get() {
-            document.body().unwrap().set_class_name("cannotscroll");
-        } else {
-            document.body().unwrap().set_class_name("canscroll");
-        }
-    });
 
     let nav_display_style = move || match is_large_screen.get() {
         true => "flex",

@@ -7,7 +7,8 @@ use reactive_stores::Store;
 
 #[component]
 pub fn BlogSubNavbar() -> impl IntoView {
-    let store = expect_context::<Store<GlobalState>>();
+    let store = use_context::<Store<GlobalState>>()
+        .expect("could not find global state store in the provided context");
 
     const TOPICS: &[(&str, &str)] = &[
         ("Java", "/?q=blog&topic=java"),
