@@ -1,11 +1,18 @@
 use leptos::prelude::*;
 use leptos_router::components::Outlet;
 use leptos_use::{use_toggle, UseToggleReturn};
+use reactive_stores::Store;
 
-use crate::components::navbar::NavBar;
+use crate::{
+    app::{GlobalState, GlobalStateStoreFields},
+    components::navbar::NavBar,
+};
 
 #[component]
 pub fn BaseLayout() -> impl IntoView {
+    let store = expect_context::<Store<GlobalState>>();
+    let sub_nav_expanded = store.sub_nav_expanded();
+
     let (nav_height, nav_height_setter) = signal(0_f64);
 
     let UseToggleReturn {
@@ -22,7 +29,12 @@ pub fn BaseLayout() -> impl IntoView {
             >
                 <NavBar
                     nav_show=show_navbar
-                    nav_toggle=move |_| toggle_navbar()
+                    nav_toggle=move |_| {
+                        if sub_nav_expanded.get() {
+                            *sub_nav_expanded.write() = false;
+                        }
+                        toggle_navbar();
+                    }
                     nav_hide=move |_| set_navbar_value(false)
                     nav_height
                     nav_height_setter

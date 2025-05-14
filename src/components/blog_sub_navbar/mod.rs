@@ -16,9 +16,10 @@ pub fn BlogSubNavbar() -> impl IntoView {
         ("I hate AI", "/?q=blog&topic=i-hate-ai"),
     ];
 
-    let sub_nav_expanded_field = store.sub_nav_expanded();
+    let sub_nav_expanded = store.sub_nav_expanded();
+
     let display_style_value = move || {
-        if sub_nav_expanded_field.get() {
+        if sub_nav_expanded.get() {
             "block"
         } else {
             "none"
@@ -60,11 +61,20 @@ fn BlogNavButton() -> impl IntoView {
     let store = expect_context::<Store<GlobalState>>();
 
     let sub_nav_expanded = store.sub_nav_expanded();
+    let main_nav_expanded = store.main_nav_expanded();
+
+    let on_click = move |_| {
+        if main_nav_expanded.get() {
+            *main_nav_expanded.write() = false;
+        }
+        *sub_nav_expanded.write() = !sub_nav_expanded.get();
+    };
+
     view! {
         <button
             type="button"
             class="inline-flex max-w-full items-center gap-4 px-5 py-3.5"
-            on:click=move |_| { *sub_nav_expanded.write() = !sub_nav_expanded.get() }
+            on:click=on_click
             aria-expanded=move || sub_nav_expanded.get().to_string()
             aria-controls="blog-topics-dropdown"
         >
