@@ -35,7 +35,12 @@ pub fn BaseLayout() -> impl IntoView {
                         }
                         toggle_navbar();
                     }
-                    nav_hide=move |_| set_navbar_value(false)
+                    nav_hide=move |_| {
+                        if sub_nav_expanded.get() {
+                            *sub_nav_expanded.write() = false;
+                        }
+                        set_navbar_value(false);
+                    }
                     nav_height
                     nav_height_setter
                 />
