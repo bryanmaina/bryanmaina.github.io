@@ -16,7 +16,10 @@ pub fn BaseLayout() -> impl IntoView {
 
     view! {
         <div class="flex flex-col items-stretch">
-            <div style:height=move || format!("calc((0.75rem * 2) + {}px)", nav_height.get())>
+            <div
+                class="w-full"
+                style:height=move || format!("calc((0.75rem * 2) + {}px)", nav_height.get())
+            >
                 <NavBar
                     nav_show=show_navbar
                     nav_toggle=move |_| toggle_navbar()
@@ -27,7 +30,7 @@ pub fn BaseLayout() -> impl IntoView {
             </div>
             <div class="h-[300vh]">
                 <div
-                    class="z-40 fixed w-screen h-screen top-0 backdrop-blur-2xl cursor-pointer"
+                    class="fixed top-0 z-40 h-screen w-screen cursor-pointer backdrop-blur-2xl"
                     style:display=move || { if show_navbar.get() { "block" } else { "none" } }
                 ></div>
                 <Outlet />

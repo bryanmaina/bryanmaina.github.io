@@ -56,7 +56,7 @@ fn ViewSelector() -> impl IntoView {
             None => view! { <HomePage /> }.into_any(),
         },
         Some("about") => view! { <AboutPage /> }.into_any(),
-        Some("projects") => ProjectsPage().into_any(),
+        Some("projects") => view! { <ProjectsPage /> }.into_any(),
         None => view! { <HomePage /> }.into_any(),
         Some(_) => view! { <HomePage /> }.into_any(),
     }

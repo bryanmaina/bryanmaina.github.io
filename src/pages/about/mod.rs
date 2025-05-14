@@ -1,17 +1,13 @@
 use leptos::prelude::*;
 use leptos_meta::*;
-use reactive_stores::Store;
 
-use crate::app::{GlobalState, GlobalStateStoreFields};
+use crate::components::navbar::set_main_navbar_position;
 
 #[component]
 pub fn AboutPage(
     #[prop(optional, default = "fixed".to_string())] main_navbar_position: String,
 ) -> impl IntoView {
-    let store = expect_context::<Store<GlobalState>>();
-    let main_nav_position = store.main_nav_position();
-    *main_nav_position.write() = main_navbar_position.to_string();
-
+    set_main_navbar_position(main_navbar_position);
     view! {
         <main>
             <Title text="about" />

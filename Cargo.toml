@@ -12,11 +12,12 @@ leptos_meta = "0.8.2"
 leptos_router = { version = "0.8.2", features = ["nightly"] }
 # gloo-net = "0.6.0"
 leptos-use = { version = "0.16.0-beta", features = [
-  "storage",
-  "use_document",
-  "use_resize_observer",
   "on_click_outside",
+  "use_document",
+  "use_media_query",
+  "use_resize_observer",
   "use_toggle",
+  "storage",
 ] }
 reactive_stores = { version = "0.2.2" }
 serde = { version = "1.0.219", features = ["derive"] }

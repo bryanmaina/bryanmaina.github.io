@@ -68,7 +68,7 @@ fn BlogNavButton() -> impl IntoView {
             aria-expanded=move || sub_nav_expanded.get().to_string()
             aria-controls="blog-topics-dropdown"
         >
-            <span class=" text-lg font-bold text-nowrap">"Blog"</span>
+            <span class=" text-lg font-medium text-nowrap">"Blog topics"</span>
             <ArrowDown {..} class="w-6" />
         </button>
     }
