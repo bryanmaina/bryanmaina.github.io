@@ -126,11 +126,11 @@ fn FooterSocials() -> impl IntoView {
                             target="_blank"
                             rel="external noopener noreferrer"
                             class="group inline-block"
+                            style:cursor=move || { format!("url({}), pointer", *cursor) }
                         >
                             <div
                                 data-after="💛"
                                 class="after:content-['.'] font-medium text-lg translate-x-0 transform transition-all duration-300 ease-in-out group-hover:-translate-2 group-hover:text-bm-blue"
-                                style:cursor=move || { format!("url({}), pointer", *cursor) }
                             >
                                 {*name}
                             </div>
