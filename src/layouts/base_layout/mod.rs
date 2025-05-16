@@ -1,11 +1,11 @@
 use leptos::prelude::*;
 use leptos_router::components::Outlet;
-use leptos_use::{use_document, use_toggle, UseToggleReturn};
+use leptos_use::{UseToggleReturn, use_document, use_toggle};
 use reactive_stores::Store;
 
 use crate::{
     app::{GlobalState, GlobalStateStoreFields},
-    components::navbar::NavBar,
+    components::{footer::Footer, navbar::NavBar},
 };
 
 #[component]
@@ -65,6 +65,7 @@ pub fn BaseLayout() -> impl IntoView {
                 <Outlet />
                 <p class="text-3xl">{move || if show_navbar.get() { "true" } else { "false" }}</p>
             </div>
+            <Footer />
         </div>
     }
 }

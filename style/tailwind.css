@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 /*@config "../tailwind.config.js";*/
 @import "tailwindcss";
 
@@ -8,14 +8,17 @@
   --color-bm-black: oklch(0.16 0.0107 248.51);
   --color-bm-blue: oklch(0.63 0.139851 238.0975);
   --color-bm-silver: oklch(0.92 0.0098 252.82);
+  --color-bm-light-silver: oklch(0.55 0.0197 248.19);
   --color-bm-white: oklch(0.99 0.0025 228.78);
 
   /*fonts*/
   --font-inter: "Inter", sans-serif;
   --font-poppins: "Poppins", sans-serif;
   --font-inter-tight: "Inter Tight", sans-serif;
-}
 
+  /*content*/
+  --content-after: attr(data-after);
+}
 
 .canscroll {
   overflow: auto;
@@ -24,4 +27,3 @@
 .cannotscroll {
   overflow: hidden;
 }
-

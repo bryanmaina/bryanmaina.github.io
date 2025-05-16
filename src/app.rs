@@ -1,9 +1,9 @@
 use leptos::prelude::*;
 use leptos_meta::*;
 use leptos_router::{
+    StaticSegment,
     components::{ParentRoute, Route, Router, Routes},
     hooks::use_query_map,
-    StaticSegment,
 };
 use reactive_stores::Store;
 use serde::Serialize;
