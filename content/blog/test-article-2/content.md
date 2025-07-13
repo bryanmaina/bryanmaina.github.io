@@ -14,10 +14,10 @@ This is a test to see how an md file is rendered in my site, the file you see wa
 
 Let's start with some code!
 
-<div class="bg-blue-950 overflow-hidden rounded-md">
-                <div class="flex justify-between px-4 items-center text-xs text-white">
-                    <p class="text-sm">Dockerfile</p>
-                </div>
+<!-- <div class="bg-blue-950 overflow-hidden rounded-md"> -->
+<!--                 <div class="flex justify-between px-4 items-center text-xs text-white"> -->
+<!--                     <p class="text-sm">Dockerfile</p> -->
+<!--                 </div> -->
 
 ```dockerfile
 # Use the official Rust image as the base image
@@ -37,14 +37,14 @@ CMD ["./target/release/my_app"]
 
 ```
 
-</div>
+<!-- </div> -->
 
 Now some rust code!
 
-<div class="bg-blue-950 overflow-hidden rounded-md">
-                <div class="flex justify-between px-4 items-center text-xs text-white">
-                    <p class="text-sm">Rust</p>
-                </div>
+<!-- <div class="bg-blue-950 overflow-hidden rounded-md"> -->
+<!--                 <div class="flex justify-between px-4 items-center text-xs text-white"> -->
+<!--                     <p class="text-sm">Rust</p> -->
+<!--                 </div> -->
 
 ```rust
 struct Person {
@@ -67,14 +67,10 @@ impl Person {
 
 ```
 
-</div>
+<!-- </div> -->
 
 Now a bit of assembly code,as these topics will be covered in this blog
 
-<div class="bg-blue-950 overflow-hidden rounded-md">
-                <div class="flex justify-between px-4 items-center text-xs text-white">
-                    <p class="text-sm">X86 asm code</p>
-                </div>
 
 ```x86asm               
 ; get a write handle
@@ -88,14 +84,9 @@ CALL    GetStdHandle
 MOV rhandle, eax            ; read handle`
 ``` 
 
-</div>
 
 And finally... for importance, C code.
 
-<div class="bg-blue-950 overflow-hidden rounded-md">
-                <div class="flex justify-between px-4 items-center text-xs text-white">
-                    <p class="text-sm">C code</p>
-                </div>
 
 ```c           
 void MyFunction()
