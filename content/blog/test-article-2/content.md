@@ -1,9 +1,13 @@
 ---
-image_path: "/images/blog_images/test.jpg"
+image_path: test.jpg
 title: Testing layout
 date: 2023-07-21
 description: Testing the layout of the site.
 project_link: none
+tags:
+  - rust
+  - java
+  - python
 ---
 
 # Website Layout Test
@@ -55,7 +59,7 @@ impl Person {
 
 Now a bit of assembly code,as these topics will be covered in this blog
 
-```x86asm
+```asm
 ; get a write handle
 MOV rcx, STD_OUTPUT_HANDLE
 CALL    GetStdHandle
@@ -69,7 +73,7 @@ MOV rhandle, eax            ; read handle`
 
 And finally... for importance, C code.
 
-```c
+```C
 void MyFunction()
 {
    TCHAR szBuffer[100];
