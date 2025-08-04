@@ -12,9 +12,9 @@
   --color-bm-white: oklch(0.99 0.0025 228.78);
 
   /*fonts*/
-  --font-inter: "Inter", sans-serif;
-  --font-poppins: "Poppins", sans-serif;
-  --font-inter-tight: "Inter Tight", sans-serif;
+  --font-inter: "Inter", "sans-serif";
+  --font-poppins: "Poppins", "sans-serif";
+  --font-inter-tight: "Inter Tight", "sans-serif";
 
   /*content*/
   --content-after: attr(data-after);

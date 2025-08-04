@@ -11,7 +11,7 @@ log = "0.4"
 leptos = { version = "0.8.2", features = ["nightly", "csr"] }
 leptos_meta = "0.8.2"
 leptos_router = { version = "0.8.2", features = ["nightly"] }
-# gloo-net = "0.6.0"
+gloo-net = "0.6.0"
 leptos-use = { version = "0.16.0-beta", features = [
   "on_click_outside",
   "use_document",
@@ -24,8 +24,10 @@ reactive_stores = { version = "0.2.2" }
 serde = { version = "1.0.219", features = ["derive"] }
 serde_json = "1.0.140"
 pulldown-cmark = "0.13.0"
-gray_matter = "0.2.8"
+gray_matter = "0.3.2"
 reactive_stores_macro = "0.2.2"
+anyhow = "1.0.98"
+thiserror = "2.0.12"
 # reactive_graph = { version = "0.2.2", features = ["effects"] }
 
 [dev-dependencies]

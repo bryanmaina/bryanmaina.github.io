@@ -57,7 +57,7 @@ pub fn BaseLayout() -> impl IntoView {
                     nav_height_setter
                 />
             </div>
-            <div class="h-[300vh]">
+            <div class="min-h-[300vh]">
                 <div
                     class="fixed top-0 z-40 h-screen w-screen cursor-pointer backdrop-blur-2xl"
                     style:display=move || { if show_navbar.get() { "block" } else { "none" } }

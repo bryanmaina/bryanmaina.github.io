@@ -9,6 +9,7 @@ use reactive_stores::Store;
 use serde::Serialize;
 
 use crate::{
+    components::blog_article::ArticleLoader,
     layouts::base_layout::BaseLayout,
     pages::{about::AboutPage, home::HomePage, projects::ProjectsPage},
 };
@@ -32,6 +33,10 @@ pub fn App() -> impl IntoView {
     view! {
         <Title formatter />
         <Link rel="shortcut icon" type_="image/ico" href="/public/favicon.ico" />
+
+        <Meta property="theme-color" content="#002b77" />
+
+        <Meta property="og:site_name" content="Bmaina logs" />
 
         <Router>
             <Routes fallback=|| "Page not found." transition=true>
@@ -67,6 +72,7 @@ fn BlogPostPage(slug: String) -> impl IntoView {
     view! {
         <h1>"Blog Post"</h1>
         // Here you would fetch and display the post based on the slug
-        <p>"Displaying article: " {slug}</p>
+        // <p>"Displaying article: " {slug}</p>
+        <ArticleLoader slug=slug />
     }
 }
