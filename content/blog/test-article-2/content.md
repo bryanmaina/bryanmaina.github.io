@@ -1,5 +1,5 @@
 ---
-date: 2023-07-21
+date: "2023-07-21"
 author: Bryan Maina
 github_link: none
 demo_link: none
@@ -8,15 +8,15 @@ categories:
   - java
   - python
 collections:
-  - test-articles
+  - "test-articles"
 seo:
   title: "Testing Layout - Code Examples in Rust, Java, Python | Bryan Maina's Blog"
   description: "Comprehensive guide featuring code examples in Rust, Java, Python, and Assembly. Learn about systems programming, web development, and software security with practical examples."
-  author:name: "Bryan Maina"
+  author:name: Bryan Maina
   author:github: "@bryanmaina"
   author:linkedin: "bryan-maina"
   author:twitter: "@BryanMaina"
-  twitter:card: summary_large_image
+  twitter:card: "summary_large_image"
   keywords:
     - rust
     - rust programming
@@ -38,12 +38,12 @@ seo:
     - web development
     - coding examples
     - programming tutorials
-  og:locale: en_US
-  og:type: article
+  og:locale: "en_US"
+  og:type: "article"
   og:image:alt: "Description of the article's main splash image"
-  article:section: Programming
-  modified_time: 2023-07-21
-  published_time: 2023-07-21
+  article:section: "Programming"
+  modified_time: "2023-07-21"
+  published_time: "2023-07-21"
   time_to_read: "5"
 ---
 
@@ -51,7 +51,7 @@ seo:
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Website Layout Test](#website-layout-test)
-  - [Heading Tags](#heading-tags)
+    - [Heading Tags](#heading-tags)
 - [Heading 1](#heading-1)
   - [Heading 2](#heading-2)
     - [Heading 3](#heading-3)
