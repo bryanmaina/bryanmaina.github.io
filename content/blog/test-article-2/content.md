@@ -41,10 +41,10 @@ seo:
   og:locale: en_US
   og:type: article
   og:image:alt: "Description of the article's main splash image"
-  article:section: "Programming"
+  article:section: Programming
   modified_time: 2023-07-21
   published_time: 2023-07-21
-  timeToRead: 5
+  time_to_read: 5
 ---
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
