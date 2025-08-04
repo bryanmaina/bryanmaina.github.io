@@ -44,7 +44,7 @@ seo:
   article:section: Programming
   modified_time: 2023-07-21
   published_time: 2023-07-21
-  time_to_read: 5
+  time_to_read: "5"
 ---
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
