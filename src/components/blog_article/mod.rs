@@ -171,20 +171,20 @@ pub fn MarkdownViewer(#[prop(into)] article: Article) -> impl IntoView {
         <Meta name="author" content=seo_metadata.author_name.clone() />
 
         // Open Graph tags
+        <Meta property="og:url" content=cannonical_ulr.clone() />
+        <Meta property="og:type" content=seo_metadata.og_type />
         <Meta property="og:title" content=seo_metadata.title.clone() />
         <Meta property="og:description" content=seo_metadata.description.clone() />
         <Meta property="og:image" content=image_with_ratio(&LANDSCAPE) />
-        <Meta property="og:image:type" content="image/avif" />
-        <Meta property="og:url" content=cannonical_ulr />
-        <Meta property="og:type" content=seo_metadata.og_type />
         <Meta property="og:local" content=seo_metadata.og_locale />
 
         // Twitter Card Tag
         <Meta name="twitter:card" content=seo_metadata.twitter_card />
+        <Meta property="twitter:url" content=cannonical_ulr />
         <Meta name="twitter:site" content=seo_metadata.author_twitter.clone() />
+                <Meta name="twitter:title" content=seo_metadata.title.clone() />
         <Meta name="twitter:image" content=image_with_ratio(&LANDSCAPE) />
         <Meta name="twitter:creator" content=seo_metadata.author_twitter />
-        <Meta name="twitter:title" content=seo_metadata.title.clone() />
         <Meta name="twitter:description" content=seo_metadata.description.clone() />
 
         // Article Specific Meta Tags
