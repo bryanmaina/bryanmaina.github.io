@@ -1,4 +1,5 @@
 use leptos::prelude::*;
+use leptos_meta::*;
 
 use crate::components::{
     blog_sub_navbar::BlogSubNavbar, count_btn::Button, navbar::set_main_navbar_position,
@@ -11,6 +12,9 @@ pub fn HomePage(
     set_main_navbar_position(main_navbar_position);
 
     view! {
+        <Title text="Home" />
+        <Meta name="descrition" content="This is Bryan Maina blog." />
+
         <BlogSubNavbar />
         <main>
             <div class="bg-red-500 h-screen">

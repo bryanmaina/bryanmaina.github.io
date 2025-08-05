@@ -28,7 +28,7 @@ pub fn App() -> impl IntoView {
     let store = Store::new(GlobalState::default());
     provide_context(store);
 
-    let formatter = |text| format!("{text} — Bryan Maina");
+    let formatter = |text| format!("{text} — BMaina logs");
 
     view! {
         <Title formatter />
