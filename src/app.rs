@@ -34,11 +34,6 @@ pub fn App() -> impl IntoView {
         <Title formatter />
         <Link rel="shortcut icon" type_="image/ico" href="/public/favicon.ico" />
 
-        <Meta
-            name="google-site-verification"
-            content="qlX_0XoEtjchKYQtMxHCwGMF0YFyIuWP-YtojhAi8uk"
-        />
-
         <Meta property="theme-color" content="#002b77" />
 
         <Meta property="og:site_name" content="Bmaina logs" />
