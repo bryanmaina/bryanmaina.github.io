@@ -214,7 +214,7 @@ Ordered list
 
 > It's probably important that images look okay here by default as well:
 
-<img src="/images/blog_images/rust_cute.png">
+![Rust Curte Crab](splash-1x1.png "A crab")
 
 Now some maths!
 
