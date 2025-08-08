@@ -103,7 +103,7 @@ impl Person {
 
 Now a bit of assembly code,as these topics will be covered in this blog
 
-```asm
+```x86asm
 ; get a write handle
 MOV rcx, STD_OUTPUT_HANDLE
 CALL    GetStdHandle
@@ -214,7 +214,7 @@ Ordered list
 
 > It's probably important that images look okay here by default as well:
 
-![Rust Curte Crab](splash-1x1.png "A crab")
+![Rust Curte Crab](splash-1x1.png)
 
 Now some maths!
 
