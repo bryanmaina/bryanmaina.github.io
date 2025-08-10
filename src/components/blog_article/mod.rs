@@ -2,8 +2,10 @@ use gloo_net::http::Request;
 use gray_matter::{Matter, engine::YAML};
 use leptos::prelude::*;
 use leptos_meta::{Meta, Script, Title};
-use pulldown_cmark::{Options, Parser};
+use leptos_router::components::A;
+use pulldown_cmark::{Event, Options, Parser, Tag};
 use serde::Deserialize;
+use slug::slugify;
 
 const WEBSITE_BASE: &str = "https://bryanmaina.github.io";
 const GITHUB_BLOG_RAW_BASE: &str =
@@ -86,7 +88,29 @@ fn parse_content<S: AsRef<str>>(content: S, slug: String) -> Option<Article> {
     match matter.parse::<ArticleMetadata>(content.as_ref()) {
         Ok(parsed_article) => parsed_article.data.map(|article_metadata| {
             let article_content = parsed_article.content;
-            let parser = Parser::new_ext(&article_content, options);
+            let parser = Parser::new_ext(&article_content, options).map(|event| match event {
+                Event::Start(Tag::Image {
+                    id,
+                    link_type,
+                    dest_url,
+                    title,
+                }) => {
+                    let new_url = if !dest_url.contains("://") {
+                        // Only transform relative URLs
+                        format!("{}/{}/{}", GITHUB_BLOG_RAW_BASE, slug, dest_url)
+                    } else {
+                        dest_url.to_string()
+                    };
+                    Event::Start(Tag::Image {
+                        id,
+                        link_type,
+                        dest_url: new_url.into(),
+                        title,
+                    })
+                }
+                e => e,
+            });
+
             let mut html_output = String::new();
             pulldown_cmark::html::push_html(&mut html_output, parser);
             Article {
@@ -122,7 +146,7 @@ pub fn ArticleLoader(#[prop(into)] slug: String) -> impl IntoView {
         }
         .into_any(),
         None => {
-            view! { <div class="p-4 text-red-500">"Faileed to parse the content"</div> }.into_any()
+            view! { <div class="p-4 text-red-500">"Failed to parse the content"</div> }.into_any()
         }
     };
 
@@ -182,7 +206,7 @@ pub fn MarkdownViewer(#[prop(into)] article: Article) -> impl IntoView {
         <Meta name="twitter:card" content=seo_metadata.twitter_card />
         <Meta property="twitter:url" content=cannonical_ulr />
         <Meta name="twitter:site" content=seo_metadata.author_twitter.clone() />
-                <Meta name="twitter:title" content=seo_metadata.title.clone() />
+        <Meta name="twitter:title" content=seo_metadata.title.clone() />
         <Meta name="twitter:image" content=image_with_ratio(&LANDSCAPE) />
         <Meta name="twitter:creator" content=seo_metadata.author_twitter />
         <Meta name="twitter:description" content=seo_metadata.description.clone() />
@@ -234,7 +258,7 @@ pub fn MarkdownViewer(#[prop(into)] article: Article) -> impl IntoView {
 
         <p class="mb-6 text-2xl font-bold">{seo_metadata.section}</p>
         <h1 class="mb-6 text-4xl font-bold">{seo_metadata.title}</h1>
-        <div class="flex items-center space-x-4 text-gray-600 mb-8">
+        <div class="mb-8 flex items-center space-x-4 text-gray-600">
             <span>"By " {seo_metadata.author_name}</span>
             <span>"⌚ " {seo_metadata.time_to_read} " min read"</span>
             <span>"📅 Last updated: " {seo_metadata.modified_time}</span>
@@ -245,5 +269,31 @@ pub fn MarkdownViewer(#[prop(into)] article: Article) -> impl IntoView {
             class="markdown-content prose max-w-none [&_h2]:text-2xl [&_h2]:font-bold [&_p]:text-lg [&*>]:font-inter"
             inner_html=article.article_content
         />
+    }
+}
+
+#[component]
+pub fn ArticleInfo(#[prop(into)] sections: Vec<String>) -> impl IntoView {
+    view! {
+        <div class="flex w-full flex-col items-center gap-3.5 px-21.5 py-6.5">
+            <div class="flex gap-1 w-fit">
+                {sections.into_iter().map(|n| view! { <ArticleTag text=n /> }).collect_view()}
+            </div>
+
+        </div>
+    }
+}
+
+#[component]
+pub fn ArticleTag(#[prop(into)] text: String) -> impl IntoView {
+    let target = slugify(&text);
+
+    view! {
+        <A
+            href=target
+            attr:class="rounded-full bg-[#f6f6f6] px-4.5 py-2.5 font-inter text-lg leading-[1.2] font-semibold tracking-[-0.6] text-[#4d4d4d]"
+        >
+            {text}
+        </A>
     }
 }

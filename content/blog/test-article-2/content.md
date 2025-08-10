@@ -42,8 +42,8 @@ seo:
   og:type: "article"
   og:image:alt: "Description of the article's main splash image"
   article:section: "Programming"
-  modified_time: "2023-07-21"
-  published_time: "2023-07-21"
+  modified_time: "January 22, 2024"
+  published_time: "January 22, 2024"
   time_to_read: "5"
 ---
 

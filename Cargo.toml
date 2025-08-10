@@ -28,6 +28,7 @@ gray_matter = "0.3.2"
 reactive_stores_macro = "0.2.2"
 anyhow = "1.0.98"
 thiserror = "2.0.12"
+slug = "0.1.6"
 # reactive_graph = { version = "0.2.2", features = ["effects"] }
 
 [dev-dependencies]
