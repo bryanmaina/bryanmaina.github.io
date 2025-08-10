@@ -10,7 +10,7 @@ categories:
 collections:
   - "test-articles"
 seo:
-  title: "Testing Layout - Code Examples in Rust, Java, Python | Bryan Maina's Blog"
+  title: "Testing Layout - Code Examples in Rust, Java, Python"
   description: "Comprehensive guide featuring code examples in Rust, Java, Python, and Assembly. Learn about systems programming, web development, and software security with practical examples."
   author:name: Bryan Maina
   author:github: "@bryanmaina"

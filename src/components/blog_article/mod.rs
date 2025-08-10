@@ -256,30 +256,48 @@ pub fn MarkdownViewer(#[prop(into)] article: Article) -> impl IntoView {
             )}
         </Script>
 
-        <p class="mb-6 text-2xl font-bold">{seo_metadata.section}</p>
-        <h1 class="mb-6 text-4xl font-bold">{seo_metadata.title}</h1>
-        <div class="mb-8 flex items-center space-x-4 text-gray-600">
-            <span>"By " {seo_metadata.author_name}</span>
-            <span>"⌚ " {seo_metadata.time_to_read} " min read"</span>
-            <span>"📅 Last updated: " {seo_metadata.modified_time}</span>
-            <span>"Author Github: " {seo_metadata.author_github}</span>
-            <span>"Author Linkedin: " {seo_metadata.author_linkedin}</span>
+        <div class="flex flex-col gap-8">
+            <ArticleInfo
+                section=seo_metadata.section
+                title=seo_metadata.title
+                time_to_read=seo_metadata.time_to_read
+                modified_time=seo_metadata.modified_time
+            />
+
+            <div class="grid grid-cols-25">
+                <img
+                    class="col-start-2 col-end-[-2] aspect-21/9 rounded-3xl object-cover"
+                    src=image_with_ratio(&LANDSCAPE)
+                />
+            </div>
+
+            <div class="mb-8 flex items-center space-x-4 text-gray-600">
+                <span>"By " {seo_metadata.author_name}</span>
+                <span>"Author Github: " {seo_metadata.author_github}</span>
+                <span>"Author Linkedin: " {seo_metadata.author_linkedin}</span>
+            </div>
+            <div
+                class="markdown-content prose max-w-none font-inter [&_h2]:text-2xl [&_h2]:font-bold [&_p]:text-lg"
+                inner_html=article.article_content
+            />
         </div>
-        <div
-            class="markdown-content prose max-w-none [&_h2]:text-2xl [&_h2]:font-bold [&_p]:text-lg [&*>]:font-inter"
-            inner_html=article.article_content
-        />
     }
 }
 
 #[component]
-pub fn ArticleInfo(#[prop(into)] sections: Vec<String>) -> impl IntoView {
+pub fn ArticleInfo(
+    #[prop(into)] section: String,
+    #[prop(into)] title: String,
+    #[prop(into)] time_to_read: String,
+    #[prop(into)] modified_time: String,
+) -> impl IntoView {
     view! {
-        <div class="flex w-full flex-col items-center gap-3.5 px-21.5 py-6.5">
-            <div class="flex gap-1 w-fit">
-                {sections.into_iter().map(|n| view! { <ArticleTag text=n /> }).collect_view()}
-            </div>
-
+        <div class="flex w-full flex-col items-center gap-3.5 px-21.5 pt-6.5 font-inter">
+            <ArticleTag text=section />
+            <h1 class="max-w-1/2 text-center text-4xl text-balance">{title}</h1>
+            <span class="text-lg leading-[1.15]">
+                {time_to_read} " min read · " {modified_time}
+            </span>
         </div>
     }
 }
@@ -291,7 +309,7 @@ pub fn ArticleTag(#[prop(into)] text: String) -> impl IntoView {
     view! {
         <A
             href=target
-            attr:class="rounded-full bg-[#f6f6f6] px-4.5 py-2.5 font-inter text-lg leading-[1.2] font-semibold tracking-[-0.6] text-[#4d4d4d]"
+            attr:class="rounded-full bg-[#f6f6f6] px-4.5 py-2.5 font-inter text-lg leading-[1.2] font-medium tracking-[-0.6] text-[#4d4d4d]"
         >
             {text}
         </A>
