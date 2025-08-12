@@ -51,7 +51,7 @@ seo:
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Website Layout Test](#website-layout-test)
-- [Heading Tags {#headingTag}](#heading-tags-headingtag)
+- [Heading Tags](#headingTag)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 

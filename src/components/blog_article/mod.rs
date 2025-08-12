@@ -1,3 +1,7 @@
+mod author_info;
+
+use author_info::*;
+
 use gloo_net::http::Request;
 use gray_matter::{Matter, engine::YAML};
 use leptos::prelude::*;
@@ -256,30 +260,29 @@ pub fn MarkdownViewer(#[prop(into)] article: Article) -> impl IntoView {
             )}
         </Script>
 
-        <div class="flex flex-col gap-8">
-            <ArticleInfo
-                section=seo_metadata.section
-                title=seo_metadata.title
-                time_to_read=seo_metadata.time_to_read
-                modified_time=seo_metadata.modified_time
-            />
+        <div class="grid grid-cols-25">
+            <div class="col-start-2 col-end-[-2] flex flex-col gap-8">
 
-            <div class="grid grid-cols-25">
+                <ArticleInfo
+                    section=seo_metadata.section
+                    title=seo_metadata.title
+                    time_to_read=seo_metadata.time_to_read
+                    modified_time=seo_metadata.modified_time
+                />
+
                 <img
-                    class="col-start-2 col-end-[-2] aspect-21/9 rounded-3xl object-cover"
                     src=image_with_ratio(&LANDSCAPE)
+                    alt="article splash screen"
+                    class="aspect-345/149 rounded-3xl object-cover"
+                />
+
+                <AuthorInfo github_username=seo_metadata.author_github />
+
+                <div
+                    class="markdown-content prose max-w-none [&_h2]:text-2xl [&_h2]:font-bold [&_p]:text-lg [&*>]:font-inter"
+                    inner_html=article.article_content
                 />
             </div>
-
-            <div class="mb-8 flex items-center space-x-4 text-gray-600">
-                <span>"By " {seo_metadata.author_name}</span>
-                <span>"Author Github: " {seo_metadata.author_github}</span>
-                <span>"Author Linkedin: " {seo_metadata.author_linkedin}</span>
-            </div>
-            <div
-                class="markdown-content prose max-w-none font-inter [&_h2]:text-2xl [&_h2]:font-bold [&_p]:text-lg"
-                inner_html=article.article_content
-            />
         </div>
     }
 }
@@ -309,7 +312,7 @@ pub fn ArticleTag(#[prop(into)] text: String) -> impl IntoView {
     view! {
         <A
             href=target
-            attr:class="rounded-full bg-[#f6f6f6] px-4.5 py-2.5 font-inter text-lg leading-[1.2] font-medium tracking-[-0.6] text-[#4d4d4d]"
+            attr:class="rounded-full bg-[#f6f6f6] px-4.5 py-2.5 font-inter text-lg leading-[1.2] font-semibold tracking-[-0.6] text-[#4d4d4d]"
         >
             {text}
         </A>
