@@ -4,10 +4,10 @@ use author_info::*;
 
 use gloo_net::http::Request;
 use gray_matter::{Matter, engine::YAML};
-use leptos::prelude::*;
+use leptos::{leptos_dom::logging::console_log, prelude::*};
 use leptos_meta::{Meta, Script, Title};
 use leptos_router::components::A;
-use pulldown_cmark::{Event, Options, Parser, Tag};
+use pulldown_cmark::{CowStr, Event, HeadingLevel, Options, Parser, Tag};
 use serde::Deserialize;
 use slug::slugify;
 
@@ -24,6 +24,13 @@ pub struct Article {
     pub article_metadata: ArticleMetadata,
     pub article_content: String,
     pub slug: String,
+    pub toc_items: Vec<TocItem>,
+}
+
+#[derive(Debug, Clone)]
+pub struct TocItem {
+    pub title: String,
+    pub id: String,
 }
 
 #[derive(Deserialize, Debug, Clone)]
@@ -75,11 +82,17 @@ pub struct SeoMetadata {
 }
 
 impl Article {
-    pub fn new<S: AsRef<str>>(content: S, article_metadata: ArticleMetadata, slug: S) -> Self {
+    pub fn new<S: AsRef<str>>(
+        content: S,
+        article_metadata: ArticleMetadata,
+        slug: S,
+        toc_items: Vec<TocItem>,
+    ) -> Self {
         Self {
             article_metadata,
             article_content: content.as_ref().to_owned(),
             slug: slug.as_ref().to_owned(),
+            toc_items,
         }
     }
 }
@@ -92,6 +105,8 @@ fn parse_content<S: AsRef<str>>(content: S, slug: String) -> Option<Article> {
     match matter.parse::<ArticleMetadata>(content.as_ref()) {
         Ok(parsed_article) => parsed_article.data.map(|article_metadata| {
             let article_content = parsed_article.content;
+            let mut toc_items = Vec::new();
+            let mut previous_id: Option<CowStr<'_>> = None;
             let parser = Parser::new_ext(&article_content, options).map(|event| match event {
                 Event::Start(Tag::Image {
                     id,
@@ -112,15 +127,50 @@ fn parse_content<S: AsRef<str>>(content: S, slug: String) -> Option<Article> {
                         title,
                     })
                 }
+                // Event::Start(Tag::Heading {
+                //     level: HeadingLevel::H2,
+                //     ref id,
+                //     classes: _,
+                //     attrs: _,
+                // }) => {
+                //     if let Some(idp) = id {
+                //         console_warn("we are here");
+                //         toc_items.push(TocItem {
+                //             title: "home".to_string(),
+                //             id: idp.to_string(),
+                //         });
+                //     }
+                //     event
+                // }
+                Event::Start(Tag::Heading {
+                    level: HeadingLevel::H2,
+                    ref id,
+                    classes: _,
+                    attrs: _,
+                }) => {
+                    previous_id = id.clone();
+                    event
+                }
+                Event::Text(ref text) => {
+                    let Some(id) = previous_id.take() else {
+                        return event;
+                    };
+                    toc_items.push(TocItem {
+                        title: text.to_string(),
+                        id: id.to_string(),
+                    });
+                    previous_id = None;
+                    event
+                }
                 e => e,
             });
-
             let mut html_output = String::new();
             pulldown_cmark::html::push_html(&mut html_output, parser);
             Article {
                 article_metadata,
                 article_content: html_output,
                 slug,
+                toc_items,
             }
         }),
         Err(e) => {
@@ -276,13 +326,52 @@ pub fn MarkdownViewer(#[prop(into)] article: Article) -> impl IntoView {
                     class="aspect-345/149 rounded-3xl object-cover"
                 />
 
-                <AuthorInfo github_username=seo_metadata.author_github />
+                <div class="flex py-12">
+                    <ArticleSidebar
+                        github_username=seo_metadata.author_github
+                        toc_items=article.toc_items
+                    />
 
-                <div
-                    class="markdown-content prose max-w-none [&_h2]:text-2xl [&_h2]:font-bold [&_p]:text-lg [&*>]:font-inter"
-                    inner_html=article.article_content
-                />
+                    <div
+                        class="markdown-content prose max-w-none [&_h2]:text-2xl [&_h2]:font-bold [&_p]:text-lg [&*>]:font-inter"
+                        inner_html=article.article_content
+                    />
+                </div>
             </div>
+
+        </div>
+    }
+}
+
+#[component]
+pub fn ArticleSidebar(
+    #[prop(into)] github_username: String,
+    #[prop(into)] toc_items: Vec<TocItem>,
+) -> impl IntoView {
+    view! {
+        <div class="md:min-h-dvh md:w-[25rem] md:px-6">
+            <nav class="mb-8">
+                <h3 class="text-lg font-semibold mb-4">"Table of Contents"</h3>
+                <ul class="space-y-2">
+                    {toc_items
+                        .into_iter()
+                        .map(|item| {
+                            console_log(&item.title);
+                            view! {
+                                <li>
+                                    <a
+                                        href=format!("#{}", item.id)
+                                        class="text-gray-600 hover:text-gray-900 block py-1"
+                                    >
+                                        {item.title}
+                                    </a>
+                                </li>
+                            }
+                        })
+                        .collect_view()}
+                </ul>
+            </nav>
+            <AuthorInfo github_username />
         </div>
     }
 }
@@ -297,10 +386,10 @@ pub fn ArticleInfo(
     view! {
         <div class="flex w-full flex-col items-center gap-3.5 px-21.5 pt-6.5 font-inter">
             <ArticleTag text=section />
-            <h1 class="max-w-1/2 text-center text-4xl text-balance">{title}</h1>
-            <span class="text-lg leading-[1.15]">
-                {time_to_read} " min read · " {modified_time}
-            </span>
+            <h1 class="max-w-1/2 text-center text-4xl font-medium text-balance">{title}</h1>
+            <p class="text-lg leading-[1.15]">
+                {time_to_read} " min read · " <span title="Last Updated">{modified_time}</span>
+            </p>
         </div>
     }
 }

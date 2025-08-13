@@ -12,7 +12,6 @@ pub struct GitHubUser {
     pub name: Option<String>,
     pub twitter_username: Option<String>,
     pub bio: Option<String>,
-    pub location: Option<String>,
 }
 
 impl GitHubUser {
@@ -49,102 +48,90 @@ pub fn AuthorInfo(#[prop(into)] github_username: String) -> impl IntoView {
     let user_data = LocalResource::new(move || retrieve_github_user_data(github_username.clone()));
 
     view! {
-        <Suspense fallback=move || {
-            view! {
-                <div class="animate-pulse p-4">
-                    <div class="h-24 w-24 rounded-full bg-gray-200 mb-4"></div>
-                    <div class="h-4 w-32 bg-gray-200 mb-2"></div>
-                    <div class="h-3 w-24 bg-gray-200"></div>
-                </div>
-            }
-        }>
-            {move || match user_data.get() {
-                None => view! { <div>"Loading..."</div> }.into_any(),
-                Some(None) => {
-                    view! { <div class="text-red-500">"Failed to load author information"</div> }
-                        .into_any()
+        <div class="flex h-fit flex-col gap-2.5 overflow-hidden pb-10 font-inter">
+            <h3 class="text-sm leading-[1.2] font-semibold text-[#5f6368] uppercase">
+                "About the author"
+            </h3>
+
+            <Suspense fallback=move || {
+                view! {
+                    <div class="animate-pulse p-4">
+                        <div class="mb-4 h-24 w-24 rounded-full bg-gray-200"></div>
+                        <div class="mb-2 h-4 w-32 bg-gray-200"></div>
+                        <div class="h-3 w-24 bg-gray-200"></div>
+                    </div>
                 }
-                Some(Some(user)) => {
-                    let (role, bio) = user.split_bio();
-                    view! {
-                        <div class="gravatar-card bg-white rounded-lg shadow-lg overflow-hidden max-w-md">
-                            <div class="p-6">
-                                // Header Section
-                                <div class="flex items-start space-x-4 mb-4">
+            }>
+                {move || match user_data.get() {
+                    None => view! { <div>"Loading..."</div> }.into_any(),
+                    Some(None) => {
+                        view! {
+                            <div class="text-red-500">"Failed to load author information"</div>
+                        }
+                            .into_any()
+                    }
+                    Some(Some(user)) => {
+                        let (role, _bio) = user.split_bio();
+                        view! {
+                            // Header Section
+                            <div class="flex items-start space-x-4 rounded-lg [&:has(#profile:hover)]:bg-white [&:has(#profile:hover)]:shadow-lg">
+                                <a rel="external" href=user.html_url.clone() class="flex-shrink-0">
+                                    <img
+                                        src=user.avatar_url
+                                        alt="Author avatar"
+                                        class="h-[4.5rem] w-[4.5rem] rounded-full border-2 border-gray-100"
+                                    />
+                                </a>
+                                <div class="flex flex-1 flex-col gap-2 py-1.5">
                                     <a
+                                        id="profile"
                                         rel="external"
                                         href=user.html_url.clone()
-                                        class="flex-shrink-0"
+                                        class="group block -tracking-tight"
+                                        title="GitHub profile"
                                     >
-                                        <img
-                                            src=user.avatar_url
-                                            alt="Author avatar"
-                                            class="w-24 h-24 rounded-full border-2 border-gray-100"
-                                        />
+                                        <h4 class="text-lg leading-[1.2] font-bold text-[#202124] group-hover:text-black">
+                                            {user.name.unwrap_or_else(|| "Unknown".to_string())}
+                                        </h4>
+                                        <p class="text-sm leading-[1.2] font-medium text-[#5f6368] group-hover:text-black">
+                                            {role}
+                                        </p>
                                     </a>
-                                    <div class="flex-1">
+
+                                    // Social Links
+                                    <div class="flex space-x-4">
                                         <a
                                             rel="external"
-                                            href=user.html_url.clone()
-                                            class="block hover:text-blue-600"
+                                            href=user.html_url
+                                            class="text-gray-400 transition-colors hover:text-gray-900"
+                                            title="GitHub"
                                         >
-                                            <h4 class="text-xl font-semibold text-gray-900">
-                                                {user.name.unwrap_or_else(|| "Unknown".to_string())}
-                                            </h4>
-                                            <p class="text-gray-600 mt-1">{role}</p>
-                                            {move || {
-                                                user.location
-                                                    .as_ref()
-                                                    .map(|location| {
-                                                        view! {
-                                                            <p class="text-gray-500 text-sm mt-1">
-                                                                {location.to_owned()}
-                                                            </p>
-                                                        }
-                                                    })
-                                            }}
+                                            <GitHubIcon />
                                         </a>
+                                        {move || {
+                                            user.twitter_username
+                                                .as_ref()
+                                                .map(|username| {
+                                                    view! {
+                                                        <a
+                                                            rel="external"
+                                                            href=format!("https://twitter.com/{username}")
+                                                            class="text-gray-400 transition-colors hover:text-gray-900"
+                                                            title="Twitter"
+                                                        >
+                                                            <TwitterIcon />
+                                                        </a>
+                                                    }
+                                                })
+                                        }}
                                     </div>
                                 </div>
-
-                                // Bio Section
-                                <div class="mb-4">
-                                    <p class="text-gray-700">{bio}</p>
-                                </div>
-
-                                // Social Links
-                                <div class="flex space-x-4">
-                                    <a
-                                        rel="external"
-                                        href=user.html_url
-                                        class="text-gray-400 hover:text-gray-900 transition-colors"
-                                        title="GitHub"
-                                    >
-                                        <GitHubIcon />
-                                    </a>
-                                    {move || {
-                                        user.twitter_username
-                                            .as_ref()
-                                            .map(|username| {
-                                                view! {
-                                                    <a
-                                                        rel="external"
-                                                        href=format!("https://twitter.com/{username}")
-                                                        class="text-gray-400 hover:text-gray-900 transition-colors"
-                                                        title="Twitter"
-                                                    >
-                                                        <TwitterIcon />
-                                                    </a>
-                                                }
-                                            })
-                                    }}
-                                </div>
                             </div>
-                        </div>
+                        }
+                            .into_any()
                     }
-                        .into_any()
-                }
-            }}
-        </Suspense>
+                }}
+            </Suspense>
+        </div>
     }
 }
